@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "improve_loop": "./src/loop_graph.py:graph",
+    "coding_agent": "./src/agent_graph.py:graph"
+  },
+  "env": "./.env"
+}

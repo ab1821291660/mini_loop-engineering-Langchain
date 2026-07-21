@@ -1,74 +1,10 @@
 
 
 conda create -n 58langchain313 python=3.13
-conda activate 58langchain313
-cursor中搜索框-配置环境::Python: Select Interpreter
-pip install --upgrade pip
-pip install -r requirements.txt
-pip freeze > requirements.txt----pip list --format=freeze > requirements.txt
-场景          	命令	                                                                            说明
-国内加速（清华源）pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple	   解决网络慢或超时问题，强烈推荐
-升级已安装的包	pip install -r requirements.txt --upgrade 或 -U	   强制将已存在的包更新到文件中指定的最新版本
-离线/无缓存安装	pip install -r requirements.txt --no-cache-dir   	绕过本地缓存，解决缓存损坏导致的安装失败
-指定额外索引源	pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu118	   适用于 PyTorch 等需要指定专用源的情况
-用户级安装（无管理员权限）	pip install -r requirements.txt --user	   仅在无法写入系统目录时使用（Conda 环境一般不需要）
-
-
-
-三表面、单内核 —— 业务全在 src/，Web/CLI/Studio 只编排
-         loop.py 与 loop_graph.py 双实现 —— 需保持行为同步
-app.py / main.py / langgraph.json# 三条入口表面 ##===================================
-入口	    启动方式
-Web     uvicorn app:app --port 8765（/ 故事页，/demo 交互）  +Web POST /api/run-loop 为例
-CLI     python main.py
-Studio  langgraph dev（图：improve_loop、coding_agent）
-##
-##
-每张工单在临时目录 copytree(seed_repo)，不污染用户仓库。产物写入 data/traces.jsonl、data/harness.json。 ##===================================
-##
-##
-verify → improve → verify ##===================================
-一句话总结：
-用 Deep Agents 作固定 coding harness，用 pytest + 过程检查 作验证信号，用 LLM 改写 HarnessConfig 作改进步，
-在 Web / CLI / LangGraph Studio 演示同一条 Level-4 hill-climbing loop；业务在 src/，缺陷在 seed_repo/，刻意弱启动配置以驱动外层改进。
-若需要，我可以再按模块（如 grader / improver / 前端）做更细的源码级拆解。
-具体故事（Acme Commerce）：
-   给 Deep Agents 一个有 bug 的包：seed_repo/acme_billing
-   下发 3 张症状型工单（BENCHMARK）
-   Agent 用文件系统工具（可选 shell）尝试修复
-   Grader 做过程 + 结果双重验证
-   失败则 Improver 根据 trace 改写配置（system_prompt + enable_shell）
-   重跑，直到通过率达标或达到最大迭代次数
-局限：非生产（无权限/多租户）、配置旋钮极少、/api/run-loop 同步阻塞、临时目录不清理、Improver prompt 偏“剧透”指向 enable_shell=true。
 
 
 
 
-##三张工单与 seed 缺陷：：症状型工单 —— 不给公式，逼 agent 调查
-Ticket	           症状	          根因文件
-pricing-discount   百分比折扣错    pricing.py：amount - percent
-invoice-total      多数量少计费    invoices.py：忽略 quantity
-partial-refund     部分退款超额    refunds.py：未 clamp 剩余额度
-##===================================
-Grader 全部满足才算 pass：：过程型验证 —— 强迫读测试 + 开 shell + 跑 pytest
-读过对应测试文件（read_file）
-通过 execute 跑过 pytest（需要 enable_shell）
-改过期望生产模块
-受保护测试与 seed 字节级一致（防改测试作弊）
-当前 workspace 上 pytest 通过
-因此关 shell 时，即使“猜对代码”也会失败——这是刻意的 anti-cheat / 教学机制。
-##===================================
-概念	              含义                                      代码
-Harness（固定）    Deep Agents：规划、文件系统、可选 shell     create_deep_agent
-Config（可改进）   外层唯一会改的旋钮                          system_prompt、enable_shell
-刻意设计：INITIAL_CONFIG 很弱（关 shell、禁止读测试/跑 pytest），第 1 轮几乎必败，外层循环才有改进空间。##===================================
-Harness 固定、Config 可变 —— 外层只改两个旋钮，焦点清晰----弱初始配置不可“修好” —— 保证第 1 轮失败，驱动 L4 循环。##===================================
-
-
-
-
-# 参考代码：
-git:https://github.com/Frontier-Intelligence-Lab/Loop-engineering-demo-Langchain-
 # Loop Engineering — Coding Agent
 ## What is this repo?
 A **teaching demo** of [loop engineering](https://www.langchain.com/blog/the-art-of-loop-engineering): how you build better agents by wrapping them in **run → verify → improve → retry**, not by one-shot prompting.

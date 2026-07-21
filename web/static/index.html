@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Acme Commerce — Loop Engineering Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/landing.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="nav-brand" href="/">Acme Commerce</a>
+    <a class="nav-cta" href="/demo">Open demo</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="brand-mark">Acme Commerce</p>
+      <h1>Billing breaks. Agents guess. Someone still babysits the prompt.</h1>
+      <p class="hero-lede">
+        We built an outer loop so the agent setup improves itself — not Maya.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="/demo">See the loop run</a>
+        <a class="btn ghost" href="#story">Read the story</a>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="ledger">
+        <div class="ledger-top">
+          <span>acme_billing</span>
+          <span class="pulse">LIVE FAIL</span>
+        </div>
+        <ul class="tickets">
+          <li><code>ACME-101</code> Discount math looks wrong</li>
+          <li><code>ACME-204</code> Multi-qty invoices undercharge</li>
+          <li class="hot"><code>ACME-318</code> Partial refunds over-refund</li>
+        </ul>
+        <div class="ledger-bar">
+          <span>pass rate</span>
+          <div class="bar"><i style="--w: 0%"></i></div>
+          <span>0 / 3</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="story">
+    <p class="chapter-kicker">The situation</p>
+    <h2>Acme’s support queue never slept.</h2>
+    <p>
+      Finance and CX lived in Slack with the same three families of bugs:
+      checkout discounts, invoice totals, refunds. A coding agent could
+      sometimes fix one — if someone sat beside it, peeked at the failing test,
+      and rewrote the prompt when it guessed.
+    </p>
+  </section>
+
+  <section class="chapter reverse">
+    <p class="chapter-kicker">The trap</p>
+    <h2>Scaling agents without scaling the loop.</h2>
+    <p>
+      Three agents in parallel made things worse: half the “fixes” broke other
+      tests, and nobody remembered which system prompt worked last Tuesday.
+      Maya wrote it on the whiteboard:
+    </p>
+    <blockquote>
+      We’re not failing because the model is dumb. We’re failing because
+      <em>we</em> are still the loop.
+    </blockquote>
+  </section>
+
+  <section class="chapter">
+    <p class="chapter-kicker">What they built</p>
+    <h2>Run. Verify. Rewrite the harness. Retry.</h2>
+    <ol class="flow">
+      <li>
+        <strong>Tickets</strong>
+        <span>Symptom-only briefs against <code>acme_billing</code></span>
+      </li>
+      <li>
+        <strong>Harness</strong>
+        <span>Deep Agents edits code; shell optional for pytest</span>
+      </li>
+      <li>
+        <strong>Verify</strong>
+        <span>Must read the failing test, run pytest, edit the right module</span>
+      </li>
+      <li>
+        <strong>Improve</strong>
+        <span>Failures rewrite <code>system_prompt</code> + <code>enable_shell</code></span>
+      </li>
+    </ol>
+  </section>
+
+  <section class="closer">
+    <p class="brand-mark small">Acme Commerce Lab</p>
+    <h2>Watch iteration 1 fail on purpose — then the harness climb.</h2>
+    <p>
+      Starter config is weak on purpose: no shell, don’t open tests.
+      The demo isn’t magic coding. It’s the outer loop becoming visible.
+    </p>
+    <a class="btn primary large" href="/demo">Enter the loop demo</a>
+  </section>
+
+  <footer class="landing-foot">
+    <span>Teaching demo · not a production Acme product</span>
+    <a href="/demo">Demo</a>
+  </footer>
+</body>
+</html>
