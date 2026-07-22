@@ -24,7 +24,7 @@ class IterationResult:
         self.pass_rate = passed / total if total else 0.0
         self.config = config
         self.rationale = rationale
-    def __repr__(self) -> str:
+    def __repr__(self) -> str:#IterationResult的__repr__(self)方法
         return (
             f"Iteration {self.iteration}: {self.passed}/{self.total} "
             f"({self.pass_rate:.0%})"
@@ -82,7 +82,7 @@ def run_improvement_loop(
             }
             traces.append(trace)
             marker = "PASS" if grade.verdict == "pass"    else "FAIL"
-            print(f"  [{marker}] {task.id}: {grade.feedback}")
+            print(f"  [{marker}] {task.id}: {grade.feedback}")##===================================##===================================##===================================##===================================
             if grade.verdict == "pass":
                 passed += 1
         append_traces(traces)##========
@@ -95,7 +95,8 @@ def run_improvement_loop(
             clone_config(current)
         )
         results.append(result)
-        print(result)
+        print(result)#默认走，IterationResult的__repr__(self)方法
+        print(result.__str__())
 
 
 
@@ -115,5 +116,5 @@ def run_improvement_loop(
         current, rationale = propose_config(failures, current, model)##===================================##===================================
         save_harness(current.snapshot())##========
         results[-1].rationale = rationale#此配置更改的目标故障模式。
-        print(f"Config rewrite rationale: {rationale}")#此配置更改的目标故障模式。
+        print(f"Config rewrite rationale: {rationale}")#此配置更改的目标故障模式。##===================================##===================================##===================================##===================================
     return results, current
