@@ -1,4 +1,4 @@
-"""Load / copy the buggy acme_billing seed repo for each agent run."""
+"""Load / copy the buggy acme_billing seed repo for each step2agentHarness run."""
 
 from __future__ import annotations
 
@@ -6,6 +6,7 @@ import shutil
 from pathlib import Path
 
 SEED_ROOT = Path(__file__).resolve().parents[1] / "seed_repo"
+# SEED_ROOT = Path(__file__).resolve().parents[1] / "seed_repo"
 
 
 def load_seed_files() -> dict[str, str]:

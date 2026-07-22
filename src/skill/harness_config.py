@@ -3,14 +3,9 @@
 Deep Agents is the harness. These fields are what the improvement loop rewrites
 when pytest fails — deliberately weak at the start so iteration 1 fails.
 """
-
 from __future__ import annotations
-
 from copy import deepcopy
-
 from pydantic import BaseModel, Field
-
-
 class HarnessConfig(BaseModel):
     system_prompt: str = Field(
         description="Instructions passed into create_deep_agent(system_prompt=...)."
@@ -19,9 +14,12 @@ class HarnessConfig(BaseModel):
         default=False,
         description="If True, LocalShellBackend (execute/pytest). If False, filesystem only.",
     )
-
     def snapshot(self) -> dict:
         return self.model_dump()
+def clone_config(config: HarnessConfig) -> HarnessConfig:
+    return HarnessConfig.model_validate(deepcopy(config.model_dump()))
+
+
 
 
 # Deliberately weak — no shell, bad process — so iteration 1 fails and the loop improves.
@@ -38,5 +36,4 @@ INITIAL_CONFIG = HarnessConfig(
 )
 
 
-def clone_config(config: HarnessConfig) -> HarnessConfig:
-    return HarnessConfig.model_validate(deepcopy(config.model_dump()))
+

@@ -7,17 +7,15 @@ Verify = pytest.
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
-from typing import Any
 
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend, LocalShellBackend
 from dotenv import load_dotenv
 
 from src import win_console  # noqa: F401  # installs Windows UTF-8 subprocess shim
-from src.harness_config import INITIAL_CONFIG, HarnessConfig
-from src.llm import build_chat_model
+from src.skill.harness_config import INITIAL_CONFIG, HarnessConfig
+from src.llm.llm import build_chat_model
 
 load_dotenv()
 
@@ -28,7 +26,7 @@ DEEP_AGENT_HARNESS = {
     "backend": "LocalShellBackend | FilesystemBackend",
     "docs": "https://docs.langchain.com/oss/python/deepagents/overview",
     "use_case": (
-        "Coding agent: fix bugs in acme_billing. "
+        "Coding step2agentHarness: fix bugs in acme_billing. "
         "Config toggles shell (pytest) + system_prompt; verification is pytest."
     ),
     "capabilities": [
@@ -45,7 +43,7 @@ DEEP_AGENT_HARNESS = {
         {
             "id": "shell",
             "title": "Shell execute (config)",
-            "detail": "enable_shell=True → LocalShellBackend so the agent can run pytest",
+            "detail": "enable_shell=True → LocalShellBackend so the step2agentHarness can run pytest",
         },
         {
             "id": "subagents",
@@ -133,7 +131,7 @@ def final_text(messages: list) -> str:
 
 def _studio_coding_agent():
     import tempfile
-    from src.seed_workspace import materialize_workspace
+    from src.step2agentHarness.seed_workspace import materialize_workspace
 
     tmp = Path(tempfile.mkdtemp(prefix="deepagent_studio_"))
     materialize_workspace(tmp)##===================================

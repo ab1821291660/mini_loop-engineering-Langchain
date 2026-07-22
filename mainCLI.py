@@ -1,9 +1,9 @@
 """CLI entry for the Deep Agents + loop engineering demo."""
 import os
 from dotenv import load_dotenv
-from src.harness_config import INITIAL_CONFIG
+from src.skill.harness_config import INITIAL_CONFIG
 from src.loop import run_improvement_loop##===================================
-from src.trace_store import clear_traces##===================================
+from src.step4state.trace_store import clear_traces##===================================
 def main() -> None:
     load_dotenv()
 
@@ -13,7 +13,7 @@ def main() -> None:
     reset = os.getenv("RESET_TRACES", "1") == "1"
     if reset:
         clear_traces()
-    print("Loop engineering — coding agent on acme_billing")
+    print("Loop engineering — coding step2agentHarness on acme_billing")
     print(f"Model: {model}")
     print(f"Max iterations: {max_iterations}")
     print(f"Target pass rate: {target_pass_rate:.0%}")
@@ -38,7 +38,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 # ##D:\anaconda3\envs\58langchain313\python.exe D:\Github_romote\mini_loop-engineering-Langchain\mainCLI.py
-# Loop engineering — coding agent on acme_billing
+# Loop engineering — coding step2agentHarness on acme_billing
 # Model: deepseek-v4-flash
 # Max iterations: 3
 # Target pass rate: 90%

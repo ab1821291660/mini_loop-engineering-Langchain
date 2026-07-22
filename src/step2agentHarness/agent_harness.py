@@ -4,10 +4,10 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from .agent_graph import final_text, make_agent, tools_from_messages
-from .benchmark import BugTicket
-from .harness_config import HarnessConfig
-from .seed_workspace import (
+from src.step2agentHarness.agent_graph import final_text, make_agent, tools_from_messages
+from src.step1trigger.benchmark import BugTicket
+from src.skill.harness_config import HarnessConfig
+from src.step2agentHarness.seed_workspace import (
     SEED_FILES,
     materialize_workspace,
     read_workspace_files,

@@ -1,14 +1,14 @@
-"""Outer improvement loop: Deep Agents coding agent → pytest → rewrite prompt."""
+"""Outer improvement loop: Deep Agents coding step2agentHarness → pytest → rewrite prompt."""
 
 from __future__ import annotations
 from pathlib import Path
 
-from .agent_harness import run_task
-from .benchmark import BENCHMARK
-from .grader import grade_workspace
-from .harness_config import HarnessConfig, clone_config
-from .improver import propose_config
-from .trace_store import append_traces, get_failures, save_harness
+from src.step2agentHarness.agent_harness import run_task
+from src.step1trigger.benchmark import BENCHMARK
+from src.step3evaluate.grader import grade_workspace
+from src.skill.harness_config import HarnessConfig, clone_config
+from src.step5evolver.improver import propose_config
+from src.step4state.trace_store import append_traces, get_failures, save_harness
 class IterationResult:
     def __init__(
         self,
@@ -112,6 +112,10 @@ def run_improvement_loop(
         if not failures:
             print("No failures to learn from; stopping early.")
             break
+
+
+
+
         #此配置更改的目标故障模式。
         current, rationale = propose_config(failures, current, model)##===================================##===================================
         save_harness(current.snapshot())##========

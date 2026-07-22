@@ -6,12 +6,13 @@ deepseek-v4-flash 是思考(reasoning)模型,不支持 function-calling 强制 t
 三个入口验证结果(均用 conda activate 58langchain313 环境)
 入口	    命令              	                          结果   
 CLI     python mainCLI.py                              ✅ 完整跑通:agent(DeepSeek)执行 → grader 判定 → improver(DeepSeek)重写配置
-Web     uvicorn app:app --port 8765                    ✅ /api/bootstrap 返回 deepseek-v4-flash;POST /api/run-loop 完整跑通循环
-                Quick start
-                cd coding_agent_loop
-                uv sync
-                cp .env.example .env   # set OPENAI_API_KEY=...
+Web     uvicorn  app:app --port 9999  8765                    ✅ /api/bootstrap 返回 deepseek-v4-flash;POST /api/run-loop 完整跑通循环
+                    Quick start
+                    cd coding_agent_loop
+                    uv sync
+                    cp .env.example .env   # set OPENAI_API_KEY=...
                 uv run python -m uvicorn app:app --reload --port 8765
+                http://localhost:9999/
                 Open http://127.0.0.1:8765 → See the loop run → Reset weak config → Run loops.
                 Expect:
                 Iteration 1 — fails (no shell → cannot execute pytest)
@@ -19,9 +20,16 @@ Web     uvicorn app:app --port 8765                    ✅ /api/bootstrap 返回
                 Later iterations — agent reads tests, runs pytest, fixes code, climbs pass rate
 Studio  langgraph dev 的 improve_loop、coding_agent     ✅ 两个图均成功构建(CompiledStateGraph)
                 uv run langgraph dev --port 2025 --no-browser
+                langgraph dev --config ./langgraph.json --port 2025 --no-browser
+            set PYTHONUTF8=1 
+            langgraph dev --port 2025
                 Open: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2025
-另外还单独做了 DeepSeek 直连连通性测试(返回 pong)和 improver 结构化输出测试(正确返回 enable_shell 与 rationale),均通过。
-##===================================
+                服务器启动后，你可以通过API文档地址（如 http://127.0.0.1:2025/docs）或 LangGraph Studio UI 来测试你的应用
+            - 🚀 API: http://127.0.0.1:2025
+              - 🎨 Studio UI: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2025
+              - 📚 API Docs: http://127.0.0.1:2025/docs
+  另外还单独做了 DeepSeek 直连连通性测试(返回 pong)和 improver 结构化输出测试(正确返回 enable_shell 与 rationale),均通过。
+  ##===================================
 
 conda create -n 58langchain313 python=3.13
 conda activate 58langchain313

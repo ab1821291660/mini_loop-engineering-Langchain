@@ -15,14 +15,14 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from src.agent_graph import DEEP_AGENT_HARNESS
-from src.benchmark import BENCHMARK
-from src.agent_harness import run_task
-from src.grader import grade_workspace
-from src.harness_config import INITIAL_CONFIG, HarnessConfig, clone_config
-from src.improver import propose_config
-from src.seed_workspace import SEED_FILES
-from src.trace_store import append_traces, clear_traces, load_all_traces, save_harness
+from src.step2agentHarness.agent_graph import DEEP_AGENT_HARNESS
+from src.step1trigger.benchmark import BENCHMARK
+from src.step2agentHarness import run_task
+from src.step3evaluate.grader import grade_workspace
+from src.skill.harness_config import INITIAL_CONFIG, HarnessConfig, clone_config
+from src.step5evolver.improver import propose_config
+from src.step2agentHarness.seed_workspace import SEED_FILES
+from src.step4state.trace_store import append_traces, clear_traces, load_all_traces, save_harness
 load_dotenv()
 ROOT = Path(__file__).parent
 STATIC = ROOT / "web" / "static"
@@ -31,7 +31,7 @@ app.mount("/static", StaticFiles(directory=STATIC), name="static")
 
 
 def _repo_view(repo: dict[str, str], edited_paths: list[str]) -> dict[str, Any]:
-    """Before/after file view for the UI (seed → agent workspace)."""
+    """Before/after file view for the UI (seed → step2agentHarness workspace)."""
     files: dict[str, Any] = {}
     for path in sorted(edited_paths or []):
         before = SEED_FILES.get(path)
@@ -92,7 +92,7 @@ def bootstrap() -> dict[str, Any]:
             "Iteration 1 should fail; the loop then rewrites config and retries."
         ),
         "use_case": (
-            "Acme Commerce — bugfix coding agent; pytest + process checks grade each ticket"
+            "Acme Commerce — bugfix coding step2agentHarness; pytest + process checks grade each ticket"
         ),
         "harness": DEEP_AGENT_HARNESS,
         "config": INITIAL_CONFIG.snapshot(),

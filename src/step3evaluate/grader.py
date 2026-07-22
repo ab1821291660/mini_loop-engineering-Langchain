@@ -13,8 +13,8 @@ from pathlib import Path
 
 from pydantic import BaseModel, Field
 
-from .benchmark import BugTicket
-from .seed_workspace import SEED_FILES
+from src.step1trigger.benchmark import BugTicket
+from src.step2agentHarness.seed_workspace import SEED_FILES
 
 
 def run_pytest(workspace: Path, test_path: str) -> tuple[bool, str]:

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from .harness_config import HarnessConfig
-from .llm import build_chat_model
+from src.skill.harness_config import HarnessConfig
+from src.llm.llm import build_chat_model
 # from langchain.chat_models import init_chat_model
 
 class ConfigPatch(BaseModel):
@@ -13,7 +13,7 @@ class ConfigPatch(BaseModel):
         description="Full replacement system_prompt for create_deep_agent."
     )
     enable_shell: bool = Field(
-        description="Whether the agent should get LocalShellBackend (execute/pytest)."
+        description="Whether the step2agentHarness should get LocalShellBackend (execute/pytest)."
     )
     rationale: str = Field(
         description="Which failure modes this config change targets."
@@ -30,8 +30,8 @@ def propose_config(
     # function-calling structured output, so use JSON mode and describe the
     # schema in the prompt instead.
     ##提示词中有体现
-    structured = llm.with_structured_output(ConfigPatch, method="json_mode")
-    # structured = llm.with_structured_output(ConfigPatch)
+    structured = llm.with_structured_output(ConfigPatch, method="json_mode")##===================================
+    # structured = llm.with_structured_output(ConfigPatch)##===================================
 
     failure_text = "\n\n".join(
         (
@@ -63,7 +63,7 @@ enable_shell: {current.enable_shell}
 Failing verification traces:
 {failure_text}
 
-Rewrite config so the agent:
+Rewrite config so the step2agentHarness:
 - enables shell (enable_shell=true) so it can run pytest
 - reads the failing test file with read_file before editing
 - reproduces with `python -m pytest <path> -q` via execute
@@ -84,7 +84,7 @@ these keys:
 - "rationale": string — which failure modes this config change targets"""
 
 
-    patch: ConfigPatch = structured.invoke(prompt)
+    patch: ConfigPatch = structured.invoke(prompt)##===================================
     improved = HarnessConfig(
         system_prompt=patch.system_prompt.strip(),
         enable_shell=patch.enable_shell,
