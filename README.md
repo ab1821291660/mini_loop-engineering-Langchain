@@ -19,10 +19,11 @@ Web     uvicorn  app:app --port 9999  8765                    ✅ /api/bootstrap
                 Improver — turns enable_shell on and rewrites system_prompt
                 Later iterations — agent reads tests, runs pytest, fixes code, climbs pass rate
 Studio  langgraph dev 的 improve_loop、coding_agent     ✅ 两个图均成功构建(CompiledStateGraph)
+set PYTHONUTF8=1 
+langgraph dev --port 2025   
                 uv run langgraph dev --port 2025 --no-browser
                 langgraph dev --config ./langgraph.json --port 2025 --no-browser
-            set PYTHONUTF8=1 
-            langgraph dev --port 2025
+
                 Open: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2025
                 服务器启动后，你可以通过API文档地址（如 http://127.0.0.1:2025/docs）或 LangGraph Studio UI 来测试你的应用
             - 🚀 API: http://127.0.0.1:2025
