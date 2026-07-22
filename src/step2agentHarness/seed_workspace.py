@@ -5,7 +5,7 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-SEED_ROOT = Path(__file__).resolve().parents[1] / "seed_repo"
+SEED_ROOT = Path(__file__).resolve().parents[2] / "seed_repo" ##===================================
 # SEED_ROOT = Path(__file__).resolve().parents[1] / "seed_repo"
 
 
