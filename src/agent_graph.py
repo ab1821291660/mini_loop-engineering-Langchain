@@ -16,6 +16,7 @@ from deepagents.backends import FilesystemBackend, LocalShellBackend
 from dotenv import load_dotenv
 
 from src.harness_config import INITIAL_CONFIG, HarnessConfig
+from src.llm import build_chat_model
 
 load_dotenv()
 
@@ -70,7 +71,7 @@ def make_agent(
 ):
     """Build Deep Agents pointed at a concrete workspace directory."""
     config = config or INITIAL_CONFIG
-    model = model or os.getenv("AGENT_MODEL", "openai:gpt-4.1-mini")
+    chat_model = build_chat_model(model)
     if config.enable_shell:
         backend = LocalShellBackend(##===================================
             root_dir=str(workspace),##===================================
@@ -99,7 +100,8 @@ def make_agent(
         "Do not spawn subagents — do the work yourself."
     )
     return create_deep_agent(
-        model=model,
+        #model=model, #model or os.getenv("AGENT_MODEL", "openai:gpt-4.1-mini")
+        model=chat_model,
         system_prompt=system_prompt,
         backend=backend,
     )

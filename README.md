@@ -1,5 +1,19 @@
 
 
+关键坑:结构化输出
+deepseek-v4-flash 是思考(reasoning)模型,不支持 function-calling 强制 tool_choice(报错 Thinking mode does not support this tool_choice)。
+因此 improver 的结构化输出从 function_calling 改为 json_mode,并在提示词中显式声明 JSON 输出字段。
+三个入口验证结果(均用 conda activate 58langchain313 环境)
+入口	   命令              	结果   
+CLI    python mainCLI.py
+✅ 完整跑通:agent(DeepSeek)执行 → grader 判定 → improver(DeepSeek)重写配置
+Web     uvicorn app:app --port 8765
+✅ /api/bootstrap 返回 deepseek-v4-flash;POST /api/run-loop 完整跑通循环
+Studio   langgraph dev 的 improve_loop、coding_agent
+✅ 两个图均成功构建(CompiledStateGraph)
+另外还单独做了 DeepSeek 直连连通性测试(返回 pong)和 improver 结构化输出测试(正确返回 enable_shell 与 rationale),均通过。
+##===================================
+
 conda create -n 58langchain313 python=3.13
 conda activate 58langchain313
 cursor中搜索框-配置环境::Python: Select Interpreter
@@ -66,7 +80,7 @@ Harness 固定、Config 可变 —— 外层只改两个旋钮，焦点清晰---
 
 
 
-
+# 参考代码：
 # 参考代码：
 git:https://github.com/Frontier-Intelligence-Lab/Loop-engineering-demo-Langchain-
 # Loop Engineering — Coding Agent

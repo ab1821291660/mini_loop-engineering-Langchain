@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from langchain.chat_models import init_chat_model
 from pydantic import BaseModel, Field
 
 from .harness_config import HarnessConfig
-
+from .llm import build_chat_model
+# from langchain.chat_models import init_chat_model
 
 class ConfigPatch(BaseModel):
     system_prompt: str = Field(
@@ -23,11 +23,15 @@ class ConfigPatch(BaseModel):
 def propose_config(
     failures: list[dict],
     current: HarnessConfig,
-    model: str = "openai:gpt-4.1-mini",
+    model: str | None = None,
 ) -> tuple[HarnessConfig, str]:
-    llm = init_chat_model(model, temperature=0.2)
-    structured = llm.with_structured_output(ConfigPatch)
-
+    llm = build_chat_model(model, temperature=0.2)
+    # DeepSeek's thinking models reject the forced tool_choice used by
+    # function-calling structured output, so use JSON mode and describe the
+    # schema in the prompt instead.
+    ##提示词中有体现
+    structured = llm.with_structured_output(ConfigPatch, method="json_mode")
+    # structured = llm.with_structured_output(ConfigPatch)
 
     failure_text = "\n\n".join(
         (
@@ -70,7 +74,14 @@ Rewrite config so the agent:
 Verification requires ALL of: read the test, execute pytest, edit the right
 module, and pytest green. A lucky code fix without that process still fails.
 
-Return a complete replacement system_prompt (not a diff) and enable_shell."""
+Return a complete replacement system_prompt (not a diff) and enable_shell.
+
+
+Respond with ONLY a single JSON object (no markdown code fences) with exactly
+these keys:
+- "system_prompt": string — the full replacement system prompt
+- "enable_shell": boolean — whether to enable the shell (execute/pytest)
+- "rationale": string — which failure modes this config change targets"""
 
 
     patch: ConfigPatch = structured.invoke(prompt)
