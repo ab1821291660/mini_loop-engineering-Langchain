@@ -15,6 +15,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend, LocalShellBackend
 from dotenv import load_dotenv
 
+from src import win_console  # noqa: F401  # installs Windows UTF-8 subprocess shim
 from src.harness_config import INITIAL_CONFIG, HarnessConfig
 from src.llm import build_chat_model
 
