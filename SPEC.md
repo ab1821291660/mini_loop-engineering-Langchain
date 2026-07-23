@@ -1,5 +1,4 @@
 # Spec: Coding-agent loop engineering
-
 ## Use case
 Deep Agents acts as a coding harness over `seed_repo/` (buggy `acme_billing`).
 Verification is pytest. 

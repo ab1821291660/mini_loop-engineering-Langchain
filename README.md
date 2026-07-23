@@ -81,7 +81,11 @@ Ticket	           症状	          根因文件
 pricing-discount   百分比折扣错    pricing.py：amount - percent
 invoice-total      多数量少计费    invoices.py：忽略 quantity
 partial-refund     部分退款超额    refunds.py：未 clamp 剩余额度
-##===================================
+##===================================task
+# Run the seed repo's pytest suite directly (all three should FAIL until fixed)
+uv run python -m pytest seed_repo/tests -q
+uv run python -m pytest seed_repo/tests/test_pricing.py -q   # single ticket
+##===================================verify
 Grader 全部满足才算 pass：：过程型验证 —— 强迫读测试 + 开 shell + 跑 pytest
 读过对应测试文件（read_file）
 通过 execute 跑过 pytest（需要 enable_shell）
@@ -89,7 +93,7 @@ Grader 全部满足才算 pass：：过程型验证 —— 强迫读测试 + 开
 受保护测试与 seed 字节级一致（防改测试作弊）
 当前 workspace 上 pytest 通过
 因此关 shell 时，即使“猜对代码”也会失败——这是刻意的 anti-cheat / 教学机制。
-##===================================
+##===================================skill
 概念	              含义                                      代码
 Harness（固定）    Deep Agents：规划、文件系统、可选 shell     create_deep_agent
 Config（可改进）   外层唯一会改的旋钮                          system_prompt、enable_shell

@@ -1,6 +1,8 @@
 # Loop Engineering
 
 ---
+参考：langchain的 https://www.langchain.com/blog/the-art-of-loop-engineering
+
 
 ## Slide 1 — Why Is Everyone Talking About Loop Engineering?
 
