@@ -2,8 +2,11 @@
 Tiny Python billing helpers used by the loop-engineering demo.
 
 
+# Run the seed repo's pytest suite directly (all three should FAIL until fixed)
 ```bash
 python -m pytest -q
+uv run python -m pytest seed_repo/tests -q
+uv run python -m pytest seed_repo/tests/test_pricing.py -q   # single ticket
 ```
 Known open tickets live in the issue tracker the coding agent receives.
 
