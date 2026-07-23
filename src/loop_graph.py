@@ -14,7 +14,7 @@ from src.step2agentHarness.agent_harness import run_task
 from src.step1trigger.benchmark import BENCHMARK
 from src.step3evaluate.grader import grade_workspace
 from src.skill.harness_config import INITIAL_CONFIG, HarnessConfig
-from src.step5evolver.improver import propose_config
+from src.step5finish_evolver.improver import propose_config
 from src.step4state.trace_store import append_traces, save_harness
 
 load_dotenv()

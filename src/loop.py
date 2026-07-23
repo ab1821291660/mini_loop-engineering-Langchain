@@ -7,7 +7,7 @@ from src.step2agentHarness.agent_harness import run_task
 from src.step1trigger.benchmark import BENCHMARK
 from src.step3evaluate.grader import grade_workspace
 from src.skill.harness_config import HarnessConfig, clone_config
-from src.step5evolver.improver import propose_config
+from src.step5finish_evolver.improver import propose_config
 from src.step4state.trace_store import append_traces, get_failures, save_harness
 class IterationResult:
     def __init__(
@@ -48,13 +48,17 @@ def run_improvement_loop(
 
         traces: list[dict] = []
         passed = 0
-        for task in BENCHMARK:##===================================
-            raw = run_task(task, current, model)##===================================
+        for task in BENCHMARK:##===================================step1
 
 
 
 
-            grade = grade_workspace(##===================================
+            raw = run_task(task, current, model)##===================================step2
+
+
+
+
+            grade = grade_workspace(##===================================step3
                 task,
                 Path(raw["workspace"]),
                 tools_called=raw.get("tools_called") or [],
@@ -85,7 +89,7 @@ def run_improvement_loop(
             print(f"  [{marker}] {task.id}: {grade.feedback}")##===================================##===================================##===================================##===================================
             if grade.verdict == "pass":
                 passed += 1
-        append_traces(traces)##========
+        append_traces(traces)##======== ##===================================step4
         ##
         ##
         result = IterationResult(
@@ -101,24 +105,20 @@ def run_improvement_loop(
 
 
 
-        if result.pass_rate >= target_pass_rate:#0.9##===================================
+        if result.pass_rate >= target_pass_rate:#0.9##===================================step5
             print("Target pass rate reached.")
             break
-
-
-
-
+        ##
+        ##
         failures = get_failures(iteration)##===================================##===================================
         if not failures:
             print("No failures to learn from; stopping early.")
             break
-
-
-
-
+        ##----改进skill----
         #此配置更改的目标故障模式。
         current, rationale = propose_config(failures, current, model)##===================================##===================================
         save_harness(current.snapshot())##========
         results[-1].rationale = rationale#此配置更改的目标故障模式。
         print(f"Config rewrite rationale: {rationale}")#此配置更改的目标故障模式。##===================================##===================================##===================================##===================================
     return results, current
+
